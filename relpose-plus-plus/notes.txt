@@ -1,0 +1,47 @@
+scp -i "~/16822.pem" ~/Downloads/CMU/Fall\ 2023/Geometry/project/dataset.py ubuntu@ec2-44-197-197-206.compute-1.amazonaws.com:~/relpose-plus-plus/relpose/
+
+scp -r -i "~/16822.pem" ~/Downloads/CMU/Fall\ 2023/Geometry/assignments/assignment3-main/reconstruction/scotty2/images/ ubuntu@ec2-3-93-74-242.compute-1.amazonaws.com:~/relpose-plus-plus/examples/scotty/
+
+
+SAM commands:
+
+First set the query point with predictor_example.ipynb
+Update path and query point in python file
+Then run
+
+python get_masks_sam.py
+
+ZOE commands:
+
+Activate zoe environment
+Change path of the scene directory
+Specify indoor or outdoor scene
+Then run
+
+python get_depth.py
+
+RELPOSE commands:
+
+With masks:
+Change the directory name for the scene path 
+python relpose/demo.py  --image_dir ./presentation_experiments/toytrain10/images --mask_dir ./presentation_experiments/toytrain10/masks --output_path toytrain10.html
+
+COLMAP commands:
+
+For estimating the camera intrinsic calibration
+colmap automatic_reconstructor --workspace_path ./toytrain10 --image_path ./toytrain10/images --single_camera 1 --sparse 1 --dense 0
+
+For estimating initial point cloud with
+colmap feature_extractor --database_path ./scotty/database.db --image_path ./scotty/images
+
+colmap exhaustive_matcher --database_path ./scotty/database.db
+
+colmap point_triangulator --database_path ./scotty/database.db --image_path ./scotty/images \
+    --input_path ./scotty/sparse --output_path ./scotty/sparse_out
+
+colmap image_undistorter --image_path ./scotty/images --input_path ./scotty/sparse_out \
+    --output_path ./scotty/sparse_undistort
+
+colmap patch_match_stereo --workspace_path ./scotty/sparse_undistort
+
+colmap stereo_fusion --workspace_path ./scotty/sparse_undistort --output_path ./scotty/sparse_undistort/fused.ply
