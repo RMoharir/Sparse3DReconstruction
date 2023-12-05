@@ -1,0 +1,3 @@
+[submodule "gaussian-splatting/submodules/depth-diff-gaussian-rasterization"]
+	path = gaussian-splatting/submodules/depth-diff-gaussian-rasterization
+	url = https://github.com/graphdeco-inria/diff-gaussian-rasterization.git
