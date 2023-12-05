@@ -1,0 +1,3 @@
+[submodule "gaussian-splatting/submodules2/diff-gaussian-rasterization-w-depth"]
+	path = gaussian-splatting/submodules2/diff-gaussian-rasterization-w-depth
+	url = git@github.com:RMoharir/diff-gaussian-rasterization-w-depth.git
